@@ -1,0 +1,4 @@
+pika
+sqlalchemy
+pymysql  # MySQL client library for SQLAlchemy
+python-dotenv

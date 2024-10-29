@@ -1,0 +1,1 @@
+docker run --detach --name event-db --env MARIADB_ROOT_PASSWORD=password --env MYSQL_DATABASE=events_db -v point-five-events-db-volume:/etc/mysql/conf.d -p 3309:3306 mariadb:latest
