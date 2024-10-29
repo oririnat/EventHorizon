@@ -3,7 +3,6 @@ from fetcher import EventFetcher
 from config import POLL_INTERVAL_SECONDS
 from transformer import Transformer
 from publisher import Publisher
-import logging
 
 # Set to store the IDs of the events that have been processed
 # This first try to prevent duplicate events from being published, but it's not foolproof
@@ -28,7 +27,7 @@ def job():
         else:
             print("No new events to process.")
     except Exception as e:
-        logging.exception("Error occurred during event processing.")
+        print("Error occurred during event processing.")
         
 
     
@@ -41,7 +40,7 @@ if __name__ == "__main__":
     scheduler.add_job(job, 'interval', seconds=POLL_INTERVAL_SECONDS)
     scheduler.add_job(reset_local_set_of_events_id, 'interval', minutes=1)
 
-    scheduler
+    
     print("Event Fetcher Service started. Press Ctrl+C to exit.")
     try:
         scheduler.start()

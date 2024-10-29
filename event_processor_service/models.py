@@ -9,8 +9,8 @@ class Actor(Base):
     id = Column(Integer, primary_key=True)
     login = Column(String(255), unique=True, nullable=False)
     avatar_url = Column(String(1024))
-
     events = relationship("Event", back_populates="actor")
+
 
 class Repository(Base):
     __tablename__ = 'repositories'
@@ -18,6 +18,7 @@ class Repository(Base):
     name = Column(String(255), nullable=False)
 
     events = relationship("Event", back_populates="repository")
+
 
 class Event(Base):
     __tablename__ = 'events'
