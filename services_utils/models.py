@@ -16,6 +16,7 @@ class Repository(Base):
     __tablename__ = 'repositories'
     id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
+    stars = Column(Integer)
 
     events = relationship("Event", back_populates="repository")
 

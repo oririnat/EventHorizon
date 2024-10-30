@@ -1,8 +1,10 @@
+import sys
+sys.path.insert(0, '../services_utils')
 from consumer import Consumer
 from apscheduler.schedulers.blocking import BlockingScheduler
 from models import Base
 from db import engine
-from config import DATABASE_NAME
+
 
 if __name__ == "__main__":
     print("Starting Event Processor Service.")

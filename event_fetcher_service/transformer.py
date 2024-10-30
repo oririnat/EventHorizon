@@ -15,19 +15,5 @@ class Transformer:
                 "created_at": event["created_at"],
             }
             
-            # Move this to a separate service
-
-            # Add the repo stars 
-            # print(f"Fetching stars for repo: {event["repo"]["name"]}")
-            # transformed_event["repo_stars"] = self.fetch_repo_stars(event["repo"]["name"])
-            # print(f"Stars: {transformed_event["repo_stars"]}")
-            
             transformed_events.append(transformed_event)
         return transformed_events
-
-    # def fetch_repo_stars(self, repo_name):
-    #     response = requests.get(f"https://api.github.com/repos/{repo_name}")
-    #     return response.json()["stargazers_count"]
-
-
-

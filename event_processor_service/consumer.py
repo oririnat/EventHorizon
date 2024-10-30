@@ -7,6 +7,9 @@ from config import (
     RABBITMQ_USER,
     RABBITMQ_PASSWORD
 )
+
+import sys
+sys.path.insert(0, '../services_utils')
 from db import SessionLocal
 from models import Event, Actor, Repository
 from sqlalchemy.exc import IntegrityError
@@ -14,6 +17,7 @@ from datetime import datetime
 import time
 from datetime import datetime
 import threading
+import requests
 
 curr_number_of_events_processed = 0
 curr_number_of_events_already_exists = 0
@@ -92,6 +96,7 @@ class Consumer:
             repository = Repository(
                 id=event_data['repo_id'],
                 name=event_data['repo_name'],
+                # num_of_stars=self.fetch_repo_stars(event_data['repo_name'])
             )
             session.add(repository)
 

@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from config import DATABASE_URI, DATABASE_NAME
+from config import DATABASE_URI
 from models import Base
 
 engine = create_engine(DATABASE_URI, pool_pre_ping=True)
