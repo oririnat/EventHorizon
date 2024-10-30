@@ -2,6 +2,7 @@
 import sys
 sys.path.insert(0, '../services_utils')
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import desc
 from typing import List
@@ -16,6 +17,15 @@ import os
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="GitHub Events API")
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Angular app origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Dependency to get DB session
 def get_db():
