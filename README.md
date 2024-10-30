@@ -1,6 +1,9 @@
 # EventHorizon
 
-![EventHorizon Logo](https://raw.githubusercontent.com/oririnat/EventHorizon/master/events-web-gui/src/assets/event_horizon_removebg.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/oririnat/EventHorizon/master/events-web-gui/src/assets/event_horizon_white.png" alt="Event Horizon Logo">
+</p>
+
 
 **EventHorizon** is a cloud-native, microservice-based intelligence platform for tracking and analyzing public GitHub events. Built with scalability and real-time processing in mind, EventHorizon leverages FastAPI, RabbitMQ, MariaDB, and Nginx to provide insightful, up-to-date information on GitHub activity. Users can view and analyze events, actor details, repository metrics, and more through a user-friendly Angular frontend.
 
@@ -66,25 +69,42 @@ Ensure Docker and Docker Compose are installed on your system.
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/EventHorizon.git
+   git clone https://github.com/oririnat/EventHorizon.git
    cd EventHorizon
    ```
+
 2. **Replace secrets the docker-compose.yml file**:
    ```bash
    Change the environment variables in the docker-compose.yml file to your own values.
+   Alternatively, get the file from the creator.
    ```
 
-3. **Build and Run the Services**:
+3. **Make sure the .sh files are in LF format**:
+    - If you are using Windows, you may need to convert the line endings of the `.sh` files to LF format.
+    
+    pay attention to the following files:
+    - `events_fetcher_service/start_with_delay.sh`
+    - `events_processor_service/start_with_delay.sh`
+    - `events_rest_api_service/start_with_delay.sh`
+
+    If you are using Windows, follow these steps to convert the line endings:
+    Open each `.sh` file in a code editor and convert the line endings to LF:
+    Convert Line Endings to LF:
+        - Use a code editor like Visual Studio Code or Notepad++ to open the script.
+        - In Visual Studio Code: Go to the bottom-right corner, click on CRLF, and select LF.
+        - In Notepad++: Go to Edit > EOL Conversion > Unix (LF).
+   
+4. **Build and Run the Services**:
    ```bash
     docker-compose up --build
     ```
 
-4. **Access the Web GUI**:
+5. **Access the Web GUI**:
     Open your browser and navigate to http://localhost:4200
     
-5. **Access the API Documentation**:
+6. **Access the API Documentation**:
     Open your browser and navigate to http://localhost:8000/docs
 
-6. **Access the RabbitMQ Management Interface**:
+7. **Access the RabbitMQ Management Interface**:
     Open your browser and navigate to http://localhost:15672
     
