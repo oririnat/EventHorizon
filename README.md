@@ -7,13 +7,14 @@
 
 **EventHorizon** is a cloud-native, microservice-based intelligence platform for tracking and analyzing public GitHub events. Built with scalability and real-time processing in mind, EventHorizon leverages FastAPI, RabbitMQ, MariaDB, and Nginx to provide insightful, up-to-date information on GitHub activity. Users can view and analyze events, actor details, repository metrics, and more through a user-friendly Angular frontend.
 
-Don't forget that EventHorizon contains the creator name: **ori** :)
+**Fun fact**:
+EventHorizon contains the creator name: **ori** :)
 
 ---
 
 ## 📖 Introduction
 
-EventHorizon’s goal is to deliver real-time, actionable insights on GitHub events. The platform continuously fetches, processes, and displays data on GitHub activity, allowing users to search by actor name, repository name, or event type, and explore trending repositories. 
+EventHorizon’s goal is to deliver real-time GitHub events. The platform continuously fetches, processes, and displays data on GitHub activity, allowing users to search by actor name, repository name, or event type, and explore trending repositories. 
 
 This system features a distributed microservices architecture:
 - **Event Fetcher Service**: Retrieves public events from GitHub.
@@ -73,10 +74,10 @@ Ensure Docker and Docker Compose are installed on your system.
    cd EventHorizon
    ```
 
-2. **Replace secrets the docker-compose.yml file**:
+2. **Replace secrets in the docker-compose.yml file**:
    ```bash
    Change the environment variables in the docker-compose.yml file to your own values.
-   Alternatively, get the file from the creator.
+   Alternatively, get the file from the creator - ori.
    ```
 
 3. **Make sure the .sh files are in LF format**:
@@ -87,7 +88,7 @@ Ensure Docker and Docker Compose are installed on your system.
     - `events_processor_service/start_with_delay.sh`
     - `events_rest_api_service/start_with_delay.sh`
 
-    If you are using Windows, follow these steps to convert the line endings:
+    Follow these steps to convert the line endings:
     Open each `.sh` file in a code editor and convert the line endings to LF:
     Convert Line Endings to LF:
         - Use a code editor like Visual Studio Code or Notepad++ to open the script.
