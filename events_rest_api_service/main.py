@@ -45,7 +45,6 @@ def get_repo_star_count(repo_name: str) -> int:
 
 @app.get("/events/", response_model=List[schemas.EventSchema])
 def list_events(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
-    
     events_with_actors_and_repos = (
         db.query(models.Event)
         .options(
@@ -58,22 +57,28 @@ def list_events(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
         .all()
     )
 
+    # Map each repository name to its Repository object, only for repositories missing star counts
+    repo_map = {
+        event.repository.name: event.repository
+        for event in events_with_actors_and_repos
+        if event.repository.stars is None
+    }
 
-    # Fetch star counts for each repository concurrently using threads
+    # Fetch star counts concurrently for each unique repository
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        # list of repo names to fetch star count for, only if the star count is not already present
-        repo_names = [event.repository.name for event in events_with_actors_and_repos if not event.repository.stars and event.repository.stars != 0]
-        # make repo_names unique
-        repo_names = list(set(repo_names))
-        futures = {executor.submit(get_repo_star_count, repo_name): event for repo_name, event in zip(repo_names, events_with_actors_and_repos)}
-        print(len(futures))
-        for future in concurrent.futures.as_completed(futures):
-            event = futures[future]
-            try:
-                event.repository.stars = future.result()
-            except Exception as e:
-                print(f"Error fetching star count for repo {event.repository.name}: {e}")
+        futures = {
+            executor.submit(get_repo_star_count, repo_name): repo_name
+            for repo_name in repo_map.keys()
+        }
 
+        for future in concurrent.futures.as_completed(futures):
+            repo_name = futures[future]
+            try:
+                repo_map[repo_name].stars = future.result()  # Update the stars count for the repository
+            except Exception as e:
+                print(f"Error fetching star count for repo {repo_name}: {e}")
+
+    # Save the stars count to the database
     db.commit()
 
     return events_with_actors_and_repos
@@ -96,37 +101,41 @@ def list_recent_actors(db: Session = Depends(get_db)):
 
     return actors
 
+
 @app.get("/repositories/recent", response_model=List[schemas.RepositorySchema])
 def list_recent_repositories(db: Session = Depends(get_db)):
+    # Subquery to get the 20 most recent repositories involved in events
     subquery = db.query(
         models.Event.repo_id,
         models.Event.created_at
     ).order_by(models.Event.created_at.desc()).distinct(models.Event.repo_id).limit(20).subquery()
 
+    # Main query to fetch repositories
     repositories = db.query(models.Repository).join(
         subquery, models.Repository.id == subquery.c.repo_id
     ).order_by(subquery.c.created_at.desc()).all()
 
-    # Fetch star counts for each repository
-    # for repo in repositories:
-    #     if not repo.stars and repo.stars != 0:
-    #         repo.stars = get_repo_star_count(repo.name)
-        
-    # Fetch star counts for each repository concurrently using threads
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        # list of repo names to fetch star count for, only if the star count is not already present
-        repo_names = [repo.name for repo in repositories if not repo.stars and repo.stars != 0]
-        futures = {executor.submit(get_repo_star_count, repo_name): repo for repo_name, repo in zip(repo_names, repositories)}
-        
-        for future in concurrent.futures.as_completed(futures):
-            repo = futures[future]
-            try:
-                print(f"Fetching star count for repo {repo.name}")
-                repo.stars = future.result()
-            except Exception as e:
-                print(f"Error fetching star count for repo {repo.name}: {e}")
+    # Map each repository name to its Repository object, only if star count is missing
+    repo_map = {
+        repo.name: repo for repo in repositories if repo.stars is None
+    }
 
-    # save the db the stars
+    # Fetch star counts concurrently for each unique repository
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = {
+            executor.submit(get_repo_star_count, repo_name): repo_name
+            for repo_name in repo_map.keys()
+        }
+
+        for future in concurrent.futures.as_completed(futures):
+            repo_name = futures[future]
+            try:
+                # Update the stars count for the repository in repo_map
+                repo_map[repo_name].stars = future.result()
+            except Exception as e:
+                print(f"Error fetching star count for repo {repo_name}: {e}")
+
+    # Commit updated star counts to the database
     db.commit()
 
     return repositories
