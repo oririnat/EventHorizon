@@ -4,7 +4,7 @@ sys.path.insert(0, '../services_utils')
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from typing import List
 from config import GITHUB_AUTH_TOKEN
 from db import SessionLocal, engine
@@ -54,14 +54,32 @@ def get_repo_star_count(repo_name: str) -> int:
 
 
 @app.get("/events/", response_model=List[schemas.EventSchema])
-def list_events(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
-    events_with_actors_and_repos = (
-        db.query(models.Event)
-        .options(
-            joinedload(models.Event.actor),      # Eager load the Actor relationship
-            joinedload(models.Event.repository)  # Eager load the Repository relationship
+def list_events(
+    skip: int = 0,
+    limit: int = 20,
+    search_term: str = '',
+    db: Session = Depends(get_db)
+):
+    # Base query with eager loading for Actor and Repository relationships
+    query = db.query(models.Event).options(
+        joinedload(models.Event.actor),
+        joinedload(models.Event.repository)
+    )
+
+    # Apply search filter if a search_term is provided
+    if search_term:
+        query = query.filter(
+            or_(
+                models.Event.actor.has(login=search_term),       # Search in actor's login (name)
+                models.Event.repository.has(name=search_term),   # Search in repository name
+                models.Event.type.ilike(f"%{search_term}%")      # Search in event type (case-insensitive)
+            )
         )
-        .order_by(desc(models.Event.id))         
+
+    # Apply ordering, pagination, and execute the query
+    events_with_actors_and_repos = (
+        query
+        .order_by(desc(models.Event.id))
         .offset(skip)
         .limit(limit)
         .all()

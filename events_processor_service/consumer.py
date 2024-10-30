@@ -120,7 +120,6 @@ def log_curr_number_of_events_processed():
     while True:
         curr_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(f"{curr_time} - {curr_number_of_events_processed} events processed.")
-        print(f"{curr_time} - {curr_number_of_events_already_exists} events already exist.")
         curr_number_of_events_processed = 0
         curr_number_of_events_already_exists = 0
         time.sleep(5)

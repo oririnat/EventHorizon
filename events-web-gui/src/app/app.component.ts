@@ -17,8 +17,11 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     console.log('AppComponent ngOnInit called');
 
-    // Fetch the number of collected events
+    this.get_num_of_collected_events();
+  }
 
+  get_num_of_collected_events() {
+    // Fetch the number of collected events
     fetch(`${environment.backendBaseUrl}/events/count`)
       .then(response => response.json())
       .then(data => {

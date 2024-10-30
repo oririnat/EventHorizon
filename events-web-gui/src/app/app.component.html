@@ -26,7 +26,7 @@
 
     <p class="window_title">Events</p>
     <div class="events_window">
-      <app-events-windows></app-events-windows>
+      <app-events-windows [num_of_collected_events]="num_of_collected_events" (reload_events)="get_num_of_collected_events()"></app-events-windows>
     </div>
 
     <div>

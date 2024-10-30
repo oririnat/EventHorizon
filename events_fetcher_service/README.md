@@ -17,3 +17,7 @@ pip3 install -r requirements.txt
 python3 app.py
 ```
 
+## Docker Installation
+docker build . -t events_fetcher_service
+docker run -d --name events_fetcher_service events_fetcher_service
+

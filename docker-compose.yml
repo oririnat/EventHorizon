@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  events_processor_service:
+    build:
+      context: .
+      dockerfile: events_processor_service/Dockerfile
+    environment:
+      - DATABASE_URL=<database_url> # mysql+pymysql://root:____@db:3306/github_events_db
+      - RABBITMQ_PASSWORD=<password>
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=user
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+      - rabbitmq
+
+  events_fetcher_service:
+    build:
+      context: .                          # Set the build context to the project root
+      dockerfile: events_fetcher_service/Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GITHUB_AUTH_TOKEN=
+      - RABBITMQ_PASSWORD=<password>
+      - RABBITMQ_HOST=rabbitmq
+      - POLL_INTERVAL_SECONDS=2
+      - GITHUB_ACCEPT=application/vnd.github+json
+      - GITHUB_API_VERSION=2022-11-28
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_QUEUE=github_events
+      - RABBITMQ_USER=user
+      - LAST_EVENT_ID_FILE=last_event_id.txt
+    depends_on:
+      - rabbitmq
+
+
+  events_rest_api_service:
+    build:
+      context: .                          # Set the build context to the project root
+      dockerfile: events_rest_api_service/Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GITHUB_AUTH_TOKEN=<github_auth_token>
+      - DATABASE_URL=<database_url> # mysql+pymysql://root:____@db:3306/github_events_db
+      
+    depends_on:
+      - db
+      - rabbitmq
+    ports:
+      - "8000:8000"                       # Expose FastAPI on port 8000
+
+  events-web-gui:
+    build:
+      context: .                          # Set the build context to the project root
+      dockerfile: events-web-gui/Dockerfile
+    depends_on:
+      - events_rest_api_service
+    ports:
+      - "4200:80"                         # Expose Angular on port 4200
+
+  db:
+    image: mariadb:10
+    environment:
+      - MYSQL_ROOT_PASSWORD=<password>
+      - MYSQL_USER=root
+      - MYSQL_DATABASE=github_events_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql            # Persist database data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=<password>
+    ports:
+      - "5672:5672"                       # RabbitMQ message broker port
+      - "15672:15672"                     # RabbitMQ management interface port
+
+volumes:
+  db_data:

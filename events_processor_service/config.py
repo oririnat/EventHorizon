@@ -9,5 +9,4 @@ RABBITMQ_QUEUE = os.getenv("RABBITMQ_QUEUE", "github_events")
 RABBITMQ_USER = os.getenv("RABBITMQ_USER", "user")
 RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "password")
 
-
-DATABASE_URI = os.getenv("DATABASE_URI")
+DATABASE_URL = os.getenv("DATABASE_URL")

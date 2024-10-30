@@ -17,16 +17,30 @@ export class RecentReposComponent implements OnInit {
   ngOnInit() {
     console.log('RecentReposComponent ngOnInit called');
 
+    this.loadRecentRepos();
+
+    // run the loadRecentRepos function every 5 seconds
+    setInterval(() => {
+      this.loadRecentRepos();
+    }, 5000);
+
+  }
+
+  loadRecentRepos() {
     // Fetch the recent repositories, /repositories with the parameter limit and skip
     fetch(`${environment.backendBaseUrl}/repositories/recent`)
       .then(response => response.json())
       .then(data => {
         console.log('Recent repositories:', data);
+
+        // sort the repositories for consistency
+        data.sort((a: RepositorySchema, b: RepositorySchema) => {
+          return a.id - b.id;
+        });
         this.recent_repos = data;
       })
       .catch(error => {
         console.log('Error fetching recent repositories:', error);
       });
   }
-
 }

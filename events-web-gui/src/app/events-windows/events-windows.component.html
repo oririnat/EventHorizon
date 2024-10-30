@@ -1,5 +1,42 @@
 <div class="main">
 
+  <div class="toolbar_row">
+
+    <div class="filter_by_event_type">
+      <span>Filter By:</span>
+      <select class="filter_by_event_type_select" (change)="filterEvents($event)">
+        <option *ngFor="let event_type of event_types" value="{{event_type}}">{{event_type}}</option>
+      </select>
+    </div>
+
+    <!-- reload icon -->
+    <div class="reload_events_with_text" (click)="reloadEvents()">
+      Reload Events
+      <img src="../../assets/reload.png" class="reload" >
+    </div>
+
+
+    <div class="search">
+      <input type="text" placeholder="Search" (keyup)="searchEvents($event)">
+      <img src="../../assets/search.png" class="search_icon" (click)="search()">
+    </div>
+
+    <!-- next and prev page arras with curr page out of ... -->
+    <div class="pagination">
+      <!-- <button (click)="prevPage()" [disabled]="page === 1">Prev</button> -->
+      <img src="../../assets/arrow_left.png" class="page_arrow" (click)="prevPage()"
+        [ngStyle]="{'opacity': this.page > 1 ? 1 : 0.5}">
+      <span><b>{{page}}</b> out of <b>{{get_total_num_of_pages()}} pages</b></span>
+      <img src="../../assets/arrow_right.png" class="page_arrow" (click)="nextPage()"
+      [ngStyle]="{'opacity': this.page < this.get_total_num_of_pages() ? 1 : 0.5}">
+    </div>
+  </div>
+
+
+  <div class="loading" *ngIf="is_events_loading">
+    <img src="../../assets/loading.gif" alt="Loading">
+  </div>
+
   <div class="events">
     <div class="event" *ngFor="let event of recent_events">
       <div class="event_header">

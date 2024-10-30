@@ -40,7 +40,6 @@ if __name__ == "__main__":
     scheduler.add_job(job, 'interval', seconds=POLL_INTERVAL_SECONDS)
     scheduler.add_job(reset_local_set_of_events_id, 'interval', minutes=1)
 
-    
     print("Event Fetcher Service started. Press Ctrl+C to exit.")
     try:
         scheduler.start()

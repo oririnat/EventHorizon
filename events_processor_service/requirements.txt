@@ -2,3 +2,5 @@ pika
 sqlalchemy
 pymysql
 python-dotenv
+requests
+apscheduler

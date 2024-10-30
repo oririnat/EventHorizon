@@ -1,10 +1,11 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from config import DATABASE_URI
+from config import DATABASE_URL
 from models import Base
 
-engine = create_engine(DATABASE_URI, pool_pre_ping=True)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 # check if the database connection is working
 try:

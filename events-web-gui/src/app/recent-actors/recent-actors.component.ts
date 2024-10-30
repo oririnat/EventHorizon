@@ -17,11 +17,25 @@ export class RecentActorsComponent implements OnInit {
   ngOnInit() {
     console.log('RecentActorsComponent ngOnInit called');
 
+    this.loadRecentActors();
+
+    // run the loadRecentActors function every 5 seconds
+    setInterval(() => {
+      this.loadRecentActors();
+    }, 5000);
+  }
+
+  loadRecentActors() {
     // Fetch the recent actors, /actors with the parameter limit and skip
     fetch(`${environment.backendBaseUrl}/actors/recent`)
       .then(response => response.json())
       .then(data => {
         console.log('Recent actors:', data);
+
+        // sort the actors for consistency
+        data.sort((a: ActorSchema, b: ActorSchema) => {
+          return a.id - b.id;
+        });
         this.recent_actors = data;
       })
       .catch(error => {
