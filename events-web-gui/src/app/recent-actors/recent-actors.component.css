@@ -1,0 +1,34 @@
+.main {
+  width: 100%;
+  height: 100%;
+}
+
+.actor_row {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 8px 0;
+  padding-left: 10px;
+}
+
+.actor_row:hover {
+  background-color: #f7f7f7;
+}
+
+.actor_avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+span {
+  font-size: 14px;
+  margin-top: 7px;
+  font-weight: bold ;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}

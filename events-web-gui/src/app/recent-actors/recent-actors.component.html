@@ -1,0 +1,11 @@
+<div class="actor" *ngFor="let actor of recent_actors">
+  <a href="https://github.com/{{actor.login}}" target="_blank">
+    <div class="actor_row">
+      <img class="actor_avatar" src="{{actor.avatar_url}}" alt="Actor Avatar" />
+      <span>{{actor.login}}</span>
+    </div>
+  </a>
+
+</div>
+
+

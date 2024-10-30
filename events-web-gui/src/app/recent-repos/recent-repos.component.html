@@ -1,0 +1,10 @@
+<div class="main">
+
+  <div class="repos">
+    <div class="repo" *ngFor="let repo of recent_repos">
+      <div>
+          <span><b>{{repo.name}}</b></span>
+          <span> ({{repo.stars}} &#9733;)</span>
+        </div>
+  </div>
+</div>

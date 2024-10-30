@@ -203,6 +203,33 @@ a:hover {
   height: 150px;
 }
 
+.events_window {
+  width: 60vw;
+  height: 600px;
+  margin: 20px;
+  overflow-y: auto;
+}
+
+.elements_window {
+  width: 30vw;
+  height: 250px;
+  margin: 20px;
+  margin-top: 30px;
+  overflow-y: auto;
+  border-radius: 5px;
+  background-color: rgb(251, 254, 255);
+  box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+}
+
+.window_title {
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
 .circle-link {
   height: 40px;
   width: 40px;

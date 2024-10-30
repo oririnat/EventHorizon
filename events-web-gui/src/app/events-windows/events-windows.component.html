@@ -1,31 +1,30 @@
 <div class="main">
-  <p>Events</p>
 
   <div class="events">
     <div class="event" *ngFor="let event of recent_events">
-      <div class="event__header">
-        <!-- <div class="event__header__title">
-          <span>{{ event.type }}</span>
-        </div>
-        <div class="event__header__time">
-          <span>{{ event.created_at | date: 'short' }}</span>
-        </div>
+      <div class="event_header">
+          <span><b>Event ID:</b> {{event.id}}</span>
+          <span><b>Event Type:</b> {{event.type}}</span>
+          <span><b>Event Date:</b> {{event.created_at | date: 'short'}}</span>
       </div>
-      <div class="event__body">
-        <div class="event__body__avatar">
-          <img [src]="event.actor.avatar_url" alt="avatar" />
-        </div>
-        <div class="event__body__content">
-          <div class="event__body__content__title">
-            <span>{{ event.actor.login }}</span>
-          </div>
-          <div class="event__body__content__description">
-            <span>{{ event.repo.name }}</span>
-          </div>
-        </div> -->
+
+
+    <!-- Actor -->
+      <div class="event_row">
+        <span><b>Actor Name:</b> {{event.actor.login}}</span>
+        <span><b>Actor URL:</b> <a href="https://github.com/{{event.actor.login}}" target="_blank">
+          https://github.com/{{event.actor.login}}
+        </a></span>
       </div>
+
+      <div class="line"></div>
+
+      <!-- Repo -->
+      <div class="event_row">
+        <span><b>Repo Name:</b> {{event.repository.name}}</span>
+        <span><b>Repo URL:</b> <a href="https://github.com/{{event.repository.name}}" target="_blank">
+          https://github.com/{{event.repository.name}}
+        </a></span>
+
     </div>
-
-
-
 </div>

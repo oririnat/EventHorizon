@@ -3,13 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { EventsWindowsComponent } from './events-windows/events-windows.component';
-import { RecentElementsWindowsComponent } from './recent-elements-windows/recent-elements-windows.component';
+import { RecentReposComponent } from './recent-repos/recent-repos.component';
+import { RecentActorsComponent } from './recent-actors/recent-actors.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EventsWindowsComponent,
-    RecentElementsWindowsComponent
+    RecentReposComponent,
+    RecentActorsComponent
   ],
   imports: [
     BrowserModule

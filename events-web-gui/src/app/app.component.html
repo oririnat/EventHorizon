@@ -24,16 +24,20 @@
 
   <section style="display: flex">
 
-    <div class="events_window" style="width: 60vw; height: 400px; margin: 20px;">
+    <p class="window_title">Events</p>
+    <div class="events_window">
       <app-events-windows></app-events-windows>
     </div>
 
     <div>
-      <div class="events_window" style="background-color: rgb(41, 120, 23); width: 30vw; height: 200px; margin: 20px;">
-
+      <p class="window_title">Recent Repos</p>
+      <div class="elements_window">
+        <app-recent-repos></app-recent-repos>
       </div>
-      <div class="events_window" style="background-color: rgb(41, 120, 23); width: 30vw; height: 200px; margin: 20px;">
 
+      <p class="window_title">Recent Actors</p>
+      <div class="elements_window" style="margin-top: 55px;">
+        <app-recent-actors></app-recent-actors>
       </div>
     </div>
 
